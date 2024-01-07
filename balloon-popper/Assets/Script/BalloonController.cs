@@ -6,9 +6,11 @@ using UnityEngine;
 public class BallonController : MonoBehaviour
 {
     public float upSpeed;
+    public AudioSource audioSource;
 
-    AudioSource audioSource;
-    public TextMeshProUGUI scoreText;
+    private void Start()
+    {
+    }
 
     // Difference beetwen awake and start:
     // Awake is called when the script instance is being loaded.
@@ -27,7 +29,15 @@ public class BallonController : MonoBehaviour
     {
         if(transform.position.y > 7f)
         {
-            Game.Restart();
+            if (GetComponent<SpriteRenderer>().enabled)
+            {
+                Game.Restart();
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+            
         }
     }
 
@@ -46,16 +56,17 @@ public class BallonController : MonoBehaviour
 
     private void OnMouseDown()
     {
-        //Debug.Log(gameObject);
         Game.score++;
-        scoreText.text = Game.score.ToString();
+        GameObject.Find("scoreText").GetComponent<TextMeshProUGUI>().text = Game.score.ToString();
         audioSource.Play();
-        ResetPosition();
+        
+        GetComponent<SpriteRenderer>().enabled = false;
+        //ResetPosition();
     }
 
     private void ResetPosition()
     {
-        float randomX = Random.Range(-2.5f, 2.5f);
+        float randomX = Random.Range(-2f, 2f);
         transform.position = new Vector2(randomX, -7f);
     }
 }
