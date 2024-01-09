@@ -6,7 +6,9 @@ using UnityEngine;
 public class BallonController : MonoBehaviour
 {
     public float upSpeed;
+
     public AudioSource audioSource;
+    public SpriteRenderer texture;
 
     private void Start()
     {
@@ -19,6 +21,7 @@ public class BallonController : MonoBehaviour
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
+        texture = GetComponent<SpriteRenderer>();
     }
 
     // Difference between Update and FixedUpdate:
@@ -37,7 +40,6 @@ public class BallonController : MonoBehaviour
             {
                 Destroy(gameObject);
             }
-            
         }
     }
 
@@ -56,17 +58,26 @@ public class BallonController : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (texture.enabled)
+        {
+            pop();
+        }
+    }
+
+    public void pop()
+    {
         Game.score++;
         GameObject.Find("scoreText").GetComponent<TextMeshProUGUI>().text = Game.score.ToString();
         audioSource.Play();
-        
-        GetComponent<SpriteRenderer>().enabled = false;
-        //ResetPosition();
-    }
+       
+        texture.enabled = false;
+        transform.GetChild(0).gameObject.SetActive(false);
 
-    private void ResetPosition()
+        // Delayed because of the sound need be played before the object is destroyed
+        Invoke("destroy", 0.5f);
+    }
+    public void destroy()
     {
-        float randomX = Random.Range(-2f, 2f);
-        transform.position = new Vector2(randomX, -7f);
+        Destroy(gameObject);
     }
 }
