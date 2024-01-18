@@ -18,7 +18,9 @@ public class pop : MonoBehaviour
         {
             Debug.Log("Space key was pressed.");
             // Restart the animator
-            animator.Play("corn-growing");
+            //animator.Play("corn-growing");
+            //animator.SetBool("Collect", true);
+            animator.SetTrigger("Get");
         }
     }
 }
