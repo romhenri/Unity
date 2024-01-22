@@ -1,23 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityStandardAssets.CrossPlatformInput;
 
 public class PlayerInput : MonoBehaviour
 {
     public Vector2 GetMovementInput()
     {
+        // Input Telado
         float horizontalInput = Input.GetAxisRaw("Horizontal");
+
+        if (horizontalInput == 0.0f)
+        {
+            // Input Joystick
+            horizontalInput = CrossPlatformInputManager.GetAxisRaw("Horizontal");
+        }
         return new Vector2(horizontalInput, 0);
     }
 
     public bool isJumpButtonDown()
     {
-        return Input.GetKeyDown(KeyCode.Space);
+        bool isKeyDownButtonDown = Input.GetKeyDown(KeyCode.Space);
+        bool isMobileButtonDown = CrossPlatformInputManager.GetButtonDown("Jump");
+        return isKeyDownButtonDown || isMobileButtonDown;
     }
 
     public bool isJumpButtonHeld()
     {
-        return Input.GetKey(KeyCode.Space);
+        bool isKeyDownButtonHeld = Input.GetKey(KeyCode.Space);
+        bool isMobileButtonHeld = CrossPlatformInputManager.GetButton("Jump");
+        return isKeyDownButtonHeld || isMobileButtonHeld;
     }
 
     public bool isCrouchButtonDown()
