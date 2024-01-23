@@ -56,5 +56,10 @@ public class PlayerController : MonoBehaviour
             playerMovement.UnCrouch();
             spriteRenderer.sprite = defaultSprite;
         }
+
+        if (transform.position.y < -8f)
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+        }
     }
 }

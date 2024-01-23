@@ -5,15 +5,22 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class PlayerInput : MonoBehaviour
 {
+    private struct InputConstants
+    {
+        public const string HORIZONTAL = "Horizontal";
+        public const string VERTICAL = "Vertical";
+        public const string JUMP = "Jump";
+        public const string CROUCH = "Crouch";
+    }
     public Vector2 GetMovementInput()
     {
         // Input Telado
-        float horizontalInput = Input.GetAxisRaw("Horizontal");
+        float horizontalInput = Input.GetAxisRaw(InputConstants.HORIZONTAL);
 
         if (horizontalInput == 0.0f)
         {
             // Input Joystick
-            horizontalInput = CrossPlatformInputManager.GetAxisRaw("Horizontal");
+            horizontalInput = CrossPlatformInputManager.GetAxisRaw(InputConstants.HORIZONTAL);
         }
         return new Vector2(horizontalInput, 0);
     }
@@ -21,24 +28,28 @@ public class PlayerInput : MonoBehaviour
     public bool isJumpButtonDown()
     {
         bool isKeyDownButtonDown = Input.GetKeyDown(KeyCode.Space);
-        bool isMobileButtonDown = CrossPlatformInputManager.GetButtonDown("Jump");
+        bool isMobileButtonDown = CrossPlatformInputManager.GetButtonDown(InputConstants.JUMP);
         return isKeyDownButtonDown || isMobileButtonDown;
     }
 
     public bool isJumpButtonHeld()
     {
         bool isKeyDownButtonHeld = Input.GetKey(KeyCode.Space);
-        bool isMobileButtonHeld = CrossPlatformInputManager.GetButton("Jump");
+        bool isMobileButtonHeld = CrossPlatformInputManager.GetButton(InputConstants.JUMP);
         return isKeyDownButtonHeld || isMobileButtonHeld;
     }
 
     public bool isCrouchButtonDown()
     {
-        return Input.GetKey(KeyCode.LeftControl);
+        bool isKeyDownButtonDown = Input.GetKey(KeyCode.S);
+        bool isJoystickDown = CrossPlatformInputManager.GetAxisRaw(InputConstants.VERTICAL) <= -0.5f;
+        return isKeyDownButtonDown || isJoystickDown;
     }
 
     public bool isCrouchButtonUp()
     {
-        return Input.GetKeyUp(KeyCode.LeftControl);
+        bool isKeyDownButtonUp = Input.GetKey(KeyCode.S) == false;
+        bool isJoystickToUp = CrossPlatformInputManager.GetAxisRaw(InputConstants.VERTICAL) > -0.5f;
+        return isKeyDownButtonUp && isJoystickToUp;
     }
 }
