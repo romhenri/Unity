@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,7 +10,14 @@ public class GameManager : MonoBehaviour
     public Transform spawnPoint;
     public float spawnRate;
 
+    public static int score = 0;
+    public static TextMesh scoreText;
+
     bool gameStarted = false;
+    void Start()
+    {
+        scoreText = GameObject.Find("ScoreText").GetComponent<TextMesh>();
+    }
 
     // Update is called once per frame
     void Update()
@@ -40,5 +48,10 @@ public class GameManager : MonoBehaviour
         // 1. The object to instantiate
         // 2. The position to instantiate the object at
         // 3. The rotation of the object
+    }
+    public static void increaseScore()
+    {
+        score = (score + 1);
+        scoreText.text = "Score: " + score;
     }
 }

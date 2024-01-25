@@ -16,6 +16,7 @@ public class Blcok : MonoBehaviour
         if(transform.position.y < -6f)
         {
             Destroy(gameObject);
+            GameManager.increaseScore();
         }
     }
 }
